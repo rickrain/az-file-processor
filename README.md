@@ -7,7 +7,7 @@ This repo includes code and assets to demonstrate how a system could upload and 
 The following resources are required to use this demo.
 
 - An Azure subscription. This is where the cluster virtual machines will be deployed.
-- Azure CLI, +v2.32.0
+- Azure CLI, +v2.34.1
 - Terraform, +v1.1.7 on local machine. Terraform is used to provision the environment in Azure.
 
 > This has been tested and verified using `Ubuntu 21.10`.
@@ -30,7 +30,7 @@ az login
 
 ```bash
 # Change directory to where the Azure infrastructure assets are located in this repo
-cd ./microEdge/src/microedge-kubelet/demo/azure-infra
+cd ./az-infra
 
 # Deploy the Azure infrastructure
 terraform init
@@ -40,9 +40,3 @@ terraform apply
 # Move up one directory to the 'demo' folder
 cd ..
 ```
-
-> When the deployment finishes, the puplic IP address of the _controlplane_, _node01_, and _node02_ will be output to your terminal. Make a note of these as you will need them in the next section when setting up your environment variables.
-
-After the deployment completes, enable JIT access to the _controlplane_, _node01_, and _node02_ virtual machines. Instructions to enable JIT VM access via the Azure port are [here](https://docs.microsoft.com/en-us/azure/defender-for-cloud/just-in-time-access-usage?tabs=jit-config-asc%2Cjit-request-asc#enable-jit-vm-access-).
-
-In this section, you deployed 3 virtual machines in Azure. The _controlplane_ and _node01_ have the k3s components needed to form a cluster. _node02_ is just a clean virtual machine that will eventually host the microEdge kubelet.
