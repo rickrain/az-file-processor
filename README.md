@@ -37,6 +37,6 @@ terraform init
 terraform plan
 terraform apply
 
-# Move up one directory to the 'demo' folder
+# Move back to the 'root' folder of the repo
 cd ..
 ```

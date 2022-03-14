@@ -41,10 +41,10 @@ module "network" {
   ]
 }
 
-module container {
-  source               = "./modules/container"
-  resource_group_name  = azurerm_resource_group.rg.name
-  location             = azurerm_resource_group.rg.location
+module "container" {
+  source              = "./modules/container"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
 
   aks_cluster_name     = "${var.az_resource_name_prefix}-aks"
   aks_version_prefix   = var.aks_version_prefix
@@ -56,8 +56,8 @@ module container {
   dns_service_ip       = var.dns_service_ip
   docker_bridge_cidr   = var.docker_bridge_cidr
 
-  acr_name             = join("", regexall("[0-9a-z]*", lower("${var.az_resource_name_prefix}-${local.random_int}-acr")))
-  acr_sku              = var.acr_sku
+  acr_name = join("", regexall("[0-9a-z]*", lower("${var.az_resource_name_prefix}-${local.random_int}-acr")))
+  acr_sku  = var.acr_sku
 }
 
 module "storage" {
@@ -75,15 +75,15 @@ module "messaging" {
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   servicebus_ns_sku   = var.servicebus_ns_sku
-  queues              = [ "incoming" ]
+  queues              = ["incoming"]
 
-  storage_account_id  = module.storage.storage_account_id
+  storage_account_id = module.storage.storage_account_id
 }
 
 module "cosmos" {
   source                 = "./modules/cosmos"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+  resource_group_name    = azurerm_resource_group.rg.name
+  location               = azurerm_resource_group.rg.location
   cosmosdb_account_name  = "${var.az_resource_name_prefix}-${local.random_int}-cosmos"
   cosmosdb_nosql_db_name = "mixed_reality"
 }

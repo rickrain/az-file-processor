@@ -4,7 +4,7 @@
 
 variable "az_resource_name_prefix" {
   description = "Prefix to use when naming azure resources"
-  default     = "az-file-proc"  // Example, resource group name would be az-file-proc-rg,
+  default     = "az-file-proc" // Example, resource group name would be az-file-proc-rg,
 }
 
 variable "location" {
@@ -69,12 +69,12 @@ variable "acr_sku" {
 // Storage account parameters
 // ****************************
 
-variable storage_account_tier {
+variable "storage_account_tier" {
   description = "Storage account tier (Standard, Premium, ...)"
   default     = "Premium"
 }
 
-variable storage_account_replication_type {
+variable "storage_account_replication_type" {
   description = "Storage account replication type (LRS, GRS, ...)"
   default     = "LRS"
 }
@@ -83,7 +83,7 @@ variable storage_account_replication_type {
 // ServiceBus parameters
 // ****************************
 
-variable servicebus_ns_sku {
+variable "servicebus_ns_sku" {
   description = "ServiceBus SKU (Basic, Standard, ...)"
   default     = "Standard"
 }

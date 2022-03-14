@@ -6,7 +6,7 @@ resource "azurerm_servicebus_namespace" "sb" {
 }
 
 resource "azurerm_servicebus_queue" "queue" {
-  for_each            = toset(var.queues)
+  for_each = toset(var.queues)
 
   name                = each.key
   namespace_id        = azurerm_servicebus_namespace.sb.id
@@ -26,6 +26,6 @@ resource "azurerm_eventgrid_system_topic_event_subscription" "eventgrid_new_blob
   system_topic        = azurerm_eventgrid_system_topic.eventgrid_new_blob_topic.name
   resource_group_name = var.resource_group_name
 
-  included_event_types = [ "Microsoft.Storage.BlobCreated" ]
+  included_event_types          = ["Microsoft.Storage.BlobCreated"]
   service_bus_queue_endpoint_id = azurerm_servicebus_queue.queue["incoming"].id
 }

@@ -4,11 +4,11 @@ data "azurerm_kubernetes_service_versions" "current" {
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                    = var.aks_cluster_name
-  location                = var.location
-  kubernetes_version      = data.azurerm_kubernetes_service_versions.current.latest_version
-  resource_group_name     = var.resource_group_name
-  dns_prefix              = var.aks_cluster_name
+  name                = var.aks_cluster_name
+  location            = var.location
+  kubernetes_version  = data.azurerm_kubernetes_service_versions.current.latest_version
+  resource_group_name = var.resource_group_name
+  dns_prefix          = var.aks_cluster_name
 
   default_node_pool {
     name           = "default"
