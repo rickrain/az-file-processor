@@ -12,6 +12,11 @@ provider "azurerm" {
   features {}
 }
 
+resource "random_integer" "ri" {
+  min = 1000
+  max = 9999
+}
+
 resource "azurerm_resource_group" "rg" {
   name     = "${var.az_resource_name_prefix}-rg"
   location = var.location
@@ -19,6 +24,7 @@ resource "azurerm_resource_group" "rg" {
 
 locals {
   aks_subnet_name = "aks-subnet"
+  random_int      = random_integer.ri.result
 }
 
 module "network" {
@@ -50,13 +56,13 @@ module container {
   dns_service_ip       = var.dns_service_ip
   docker_bridge_cidr   = var.docker_bridge_cidr
 
-  acr_name             = join("", regexall("[[:lower:]]*", lower("${var.az_resource_name_prefix}acr")))
+  acr_name             = join("", regexall("[0-9a-z]*", lower("${var.az_resource_name_prefix}-${local.random_int}-acr")))
   acr_sku              = var.acr_sku
 }
 
 module "storage" {
   source              = "./modules/storage"
-  name                = join("", regexall("[[:lower:]]*", lower("${var.az_resource_name_prefix}stg")))
+  name                = join("", regexall("[0-9a-z]*", lower("${var.az_resource_name_prefix}-${local.random_int}-stg")))
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   tier                = var.storage_account_tier
@@ -65,7 +71,7 @@ module "storage" {
 
 module "messaging" {
   source              = "./modules/messaging"
-  servicebus_ns_name  = "${var.az_resource_name_prefix}-sbn"
+  servicebus_ns_name  = "${var.az_resource_name_prefix}-${local.random_int}-sbn"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
   servicebus_ns_sku   = var.servicebus_ns_sku
@@ -78,6 +84,6 @@ module "cosmos" {
   source                 = "./modules/cosmos"
   resource_group_name = azurerm_resource_group.rg.name
   location            = azurerm_resource_group.rg.location
-  cosmosdb_account_name  = "${var.az_resource_name_prefix}-cosmos"
+  cosmosdb_account_name  = "${var.az_resource_name_prefix}-${local.random_int}-cosmos"
   cosmosdb_nosql_db_name = "mixed_reality"
 }
